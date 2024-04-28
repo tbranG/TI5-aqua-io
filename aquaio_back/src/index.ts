@@ -3,11 +3,12 @@ import bodyParser from 'body-parser';
 import sensorRouter from './routes/sensorDataRouter';
 
 const app = express();
-const port = 8000;
+const portBack = 8000;
+const portFront = 8081;
 
 const cors = require('cors');
 const corsConfig = {
-    origin: `http://localhost:${port}`,
+    origin: '*',
     methods: 'GET,POST'
 }
 
@@ -22,6 +23,6 @@ app.get('/hello', (_, res) => {
     res.status(200).send('<h1>Hello World!</h1>');
 });
 
-app.listen(port, () => {
-    console.log(`API now listening at port ${port}\nTest: http://localhost:${port}/hello\n`);
+app.listen(portBack, () => {
+    console.log(`API now listening at port ${portBack}\nTest: http://localhost:${portBack}/hello\n`);
 });
