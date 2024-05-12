@@ -27,7 +27,6 @@ const writeDataIfValid = (data: ISensorData, response: Response<any>) => {
     })
 }
 
-
 sensorRouter.get('/receiveData', async (req, res) => {
     const temperature = parseFloat(req.query.temperature as string);
     const ph = parseFloat(req.query.ph as string);
@@ -51,11 +50,16 @@ sensorRouter.post('/receiveData', async (req, res) => {
 
 sensorRouter.get('/getData', async (_, res) => {
     fs.readFile('src/data/currentSensorData.json', (err, data) => {
-        if(err !== null) res.status(500).send({
-            status: 500,
-            message: 'Erro ao ler o arquivo'
-        });
-        else res.setHeader('Content-Type', 'sensorRouterlication/json'); res.status(200).send(data);
+        if(err !== null){
+            res.status(500).send({
+                status: 500,
+                message: 'Erro ao ler o arquivo'
+            });
+        }
+        else {
+            res.setHeader('Content-Type', 'sensorRouterlication/json');
+            res.status(200).send(data);
+        }
     });
 })
 
