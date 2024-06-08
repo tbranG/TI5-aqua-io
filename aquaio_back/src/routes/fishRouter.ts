@@ -12,26 +12,20 @@ fishRouter.get("/", async (req, res) => {
     res.send(fishData);
 });
 
-fishRouter.post("/new", (req, res) => {
+fishRouter.post("/new", async (req, res) => {
     const fish: Fish = req.body;
-    createFish(fish);
+    const response = await createFish(fish);
 
-    res.status(200);
-    res.send({
-        status: 200,
-        message: `Peixe adicionado na tabela`
-    });
+    res.status(response.status);
+    res.send(response);
 })
 
-fishRouter.delete("/:id", (req, res) => {
+fishRouter.delete("/:id", async (req, res) => {
     const id = parseInt(req.params.id);
-    deleteFish(id);
+    const response = await deleteFish(id);
 
-    res.status(200);
-    res.send({
-        status: 200,
-        message: `O peixe de id=${id} foi deletado da tabela`
-    })
+    res.status(response.status);
+    res.send(response);
 })
 
 export default fishRouter;
