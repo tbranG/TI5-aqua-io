@@ -53,15 +53,16 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Aqua.IO</Text>
-      { (temperature < 25 || temperature > 28) ?
-          <Text style={styles.h2_red}>- Temperatura = {temperature}</Text>:
-          <Text style={styles.h2}>- Temperatura = {temperature}</Text>
-      }
-      {
-        (ph < 6 || ph > 9) ?
-          <Text style={styles.h2_red}>- Ph = {ph}</Text>:
-          <Text style={styles.h2}>- Ph = {ph}</Text>
-      }
+      <View style={styles.sensorContainer}>
+        <View style={styles.sensorBox}>
+          <Text style={styles.sensorLabel}>Temperatura</Text>
+          <Text style={temperature < 25 || temperature > 28 ? styles.sensorValueRed : styles.sensorValue}>{temperature}°C</Text>
+        </View>
+        <View style={styles.sensorBox}>
+          <Text style={styles.sensorLabel}>pH</Text>
+          <Text style={ph < 6 || ph > 9 ? styles.sensorValueRed : styles.sensorValue}>{ph}</Text>
+        </View>
+      </View>
 
       <View style={styles.buttonContainer}>
         <Button title="Cadastrar Peixe" onPress={() => setModalVisible(true)} />
@@ -147,12 +148,35 @@ const styles = StyleSheet.create({
     fontFamily: 'LobsterTwo_400Regular',
     marginBottom: 20,
   },
-  h2: {
-    fontSize: 24
+  sensorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: 20,
   },
-  h2_red: {
+  sensorBox: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+    flex: 1,
+    margin: 5,
+  },
+  sensorLabel: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  sensorValue: {
     fontSize: 24,
-    color: 'red'
+  },
+  sensorValueRed: {
+    fontSize: 24,
+    color: 'red',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
   },
   centeredView: {
     flex: 1,
@@ -174,11 +198,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5
-  },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 30,
-    right: 30,
   },
   button: {
     borderRadius: 20,
