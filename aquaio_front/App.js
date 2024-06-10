@@ -7,8 +7,8 @@ import AppLoading from 'expo-app-loading';
 import { useFonts, LobsterTwo_400Regular } from '@expo-google-fonts/lobster-two';
 
 export default function App() {
-  const[temperature, setTemperature] = useState(0);
-  const[ph, setPh] = useState(0);
+  const [temperature, setTemperature] = useState(0);
+  const [ph, setPh] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [fishType, setFishType] = useState('');
   const [maxPh, setMaxPh] = useState('');
@@ -63,7 +63,9 @@ export default function App() {
           <Text style={styles.h2}>- Ph = {ph}</Text>
       }
 
-      <Button title="Cadastrar Peixe" onPress={() => setModalVisible(true)} />
+      <View style={styles.buttonContainer}>
+        <Button title="Cadastrar Peixe" onPress={() => setModalVisible(true)} />
+      </View>
 
       <Modal
         animationType="slide"
@@ -136,7 +138,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 50,
   },
   title: {
     fontSize: 48,
@@ -171,6 +174,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
   },
   button: {
     borderRadius: 20,
