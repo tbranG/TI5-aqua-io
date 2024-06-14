@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useFonts, LobsterTwo_700Bold } from '@expo-google-fonts/lobster-two';
 import { Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Picker } from '@react-native-picker/picker';
 
 export default function App() {
   const [temperature, setTemperature] = useState(0);
@@ -17,6 +17,7 @@ export default function App() {
   const [minPh, setMinPh] = useState('');
   const [maxTemp, setMaxTemp] = useState('');
   const [minTemp, setMinTemp] = useState('');
+  const [selectedFish, setSelectedFish] = useState('Colisa');
 
   let [fontsLoaded] = useFonts({
     LobsterTwo_700Bold,
@@ -70,6 +71,20 @@ export default function App() {
             <Text style={styles.sensorLabel}>pH</Text>
             <Text style={ph < 6 || ph > 9 ? styles.sensorValueRed : styles.sensorValue}>{ph}</Text>
           </View>
+        </View>
+
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={selectedFish}
+            style={styles.picker}
+            itemStyle={styles.pickerItem}
+            onValueChange={(itemValue) => setSelectedFish(itemValue)}
+          >
+            <Picker.Item label="Colisa" value="Colisa" />
+            <Picker.Item label="Tetra neon" value="Tetra neon" />
+            <Picker.Item label="Tilapia" value="Tilapia" />
+            <Picker.Item label="Peixinho dourado" value="Peixinho dourado" />
+          </Picker>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -190,6 +205,23 @@ const styles = StyleSheet.create({
   sensorValueRed: {
     fontSize: 24,
     color: 'red',
+    fontFamily: 'Inter_600SemiBold',
+  },
+  pickerContainer: {
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    overflow: 'hidden',
+    marginTop: 20,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+  },
+  pickerItem: {
+    color: '#1E90FF',
     fontFamily: 'Inter_600SemiBold',
   },
   buttonContainer: {
