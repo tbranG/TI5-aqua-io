@@ -4,8 +4,8 @@ import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity } from 'reac
 import axios from 'axios';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import { useFonts, LobsterTwo_400Regular } from '@expo-google-fonts/lobster-two';
-import { Inter_400Regular } from '@expo-google-fonts/inter';
+import { useFonts, LobsterTwo_700Bold } from '@expo-google-fonts/lobster-two';
+import { Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
@@ -19,8 +19,9 @@ export default function App() {
   const [minTemp, setMinTemp] = useState('');
 
   let [fontsLoaded] = useFonts({
-    LobsterTwo_400Regular,
+    LobsterTwo_700Bold,
     Inter_400Regular,
+    Inter_600SemiBold,
   });
 
   useEffect(() => {
@@ -156,8 +157,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 48,
-    color: '#1E90FF',
-    fontFamily: 'LobsterTwo_400Regular',
+    color: '#FFF',
+    fontFamily: 'LobsterTwo_700Bold',
     marginBottom: 20,
   },
   sensorContainer: {
@@ -177,13 +178,18 @@ const styles = StyleSheet.create({
   sensorLabel: {
     fontSize: 18,
     marginBottom: 5,
+    color: '#1E90FF',
+    fontFamily: 'Inter_600SemiBold',
   },
   sensorValue: {
     fontSize: 24,
+    color: '#1E90FF',
+    fontFamily: 'Inter_600SemiBold',
   },
   sensorValueRed: {
     fontSize: 24,
     color: 'red',
+    fontFamily: 'Inter_600SemiBold',
   },
   buttonContainer: {
     position: 'absolute',
@@ -194,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     elevation: 2,
   },
   customButtonText: {
