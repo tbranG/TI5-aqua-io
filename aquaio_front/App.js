@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '80%',
     marginBottom: 20,
+    marginTop: 20,
   },
   sensorBox: {
     backgroundColor: '#f0f0f0',
