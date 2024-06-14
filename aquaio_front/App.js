@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TextInput, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useFonts, LobsterTwo_400Regular } from '@expo-google-fonts/lobster-two';
+import { Inter_400Regular } from '@expo-google-fonts/inter';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
   const [temperature, setTemperature] = useState(0);
@@ -18,6 +20,7 @@ export default function App() {
 
   let [fontsLoaded] = useFonts({
     LobsterTwo_400Regular,
+    Inter_400Regular,
   });
 
   useEffect(() => {
@@ -51,93 +54,102 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Aqua.IO</Text>
-      <View style={styles.sensorContainer}>
-        <View style={styles.sensorBox}>
-          <Text style={styles.sensorLabel}>Temperatura</Text>
-          <Text style={temperature < 25 || temperature > 28 ? styles.sensorValueRed : styles.sensorValue}>{temperature}°C</Text>
-        </View>
-        <View style={styles.sensorBox}>
-          <Text style={styles.sensorLabel}>pH</Text>
-          <Text style={ph < 6 || ph > 9 ? styles.sensorValueRed : styles.sensorValue}>{ph}</Text>
-        </View>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <Button title="Cadastrar Peixe" onPress={() => setModalVisible(true)} />
-      </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Cadastrar Peixe</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Tipo do peixe"
-              value={fishType}
-              onChangeText={setFishType}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="pH máximo"
-              keyboardType="numeric"
-              value={maxPh}
-              onChangeText={setMaxPh}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="pH mínimo"
-              keyboardType="numeric"
-              value={minPh}
-              onChangeText={setMinPh}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Temperatura máxima"
-              keyboardType="numeric"
-              value={maxTemp}
-              onChangeText={setMaxTemp}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Temperatura mínima"
-              keyboardType="numeric"
-              value={minTemp}
-              onChangeText={setMinTemp}
-            />
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={handleSave}
-            >
-              <Text style={styles.textStyle}>Salvar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Cancelar</Text>
-            </TouchableOpacity>
+    <LinearGradient
+      colors={['#87CEFA', '#1E90FF']}
+      style={styles.gradient}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Aqua.IO</Text>
+        <View style={styles.sensorContainer}>
+          <View style={styles.sensorBox}>
+            <Text style={styles.sensorLabel}>Temperatura</Text>
+            <Text style={temperature < 25 || temperature > 28 ? styles.sensorValueRed : styles.sensorValue}>{temperature}°C</Text>
+          </View>
+          <View style={styles.sensorBox}>
+            <Text style={styles.sensorLabel}>pH</Text>
+            <Text style={ph < 6 || ph > 9 ? styles.sensorValueRed : styles.sensorValue}>{ph}</Text>
           </View>
         </View>
-      </Modal>
-      
-      <StatusBar style="auto" />
-    </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.customButton} onPress={() => setModalVisible(true)}>
+            <Text style={styles.customButtonText}>Cadastrar Peixe</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Cadastrar Peixe</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Tipo do peixe"
+                value={fishType}
+                onChangeText={setFishType}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="pH máximo"
+                keyboardType="numeric"
+                value={maxPh}
+                onChangeText={setMaxPh}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="pH mínimo"
+                keyboardType="numeric"
+                value={minPh}
+                onChangeText={setMinPh}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Temperatura máxima"
+                keyboardType="numeric"
+                value={maxTemp}
+                onChangeText={setMaxTemp}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Temperatura mínima"
+                keyboardType="numeric"
+                value={minTemp}
+                onChangeText={setMinTemp}
+              />
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={handleSave}
+              >
+                <Text style={styles.textStyle}>Salvar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        
+        <StatusBar style="auto" />
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 50,
@@ -177,6 +189,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     right: 30,
+  },
+  customButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    elevation: 2,
+  },
+  customButtonText: {
+    color: '#1E90FF',
+    fontFamily: 'Inter_400Regular',
+    fontSize: 16,
+    textAlign: 'center',
   },
   centeredView: {
     flex: 1,
