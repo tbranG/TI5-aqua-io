@@ -18,6 +18,8 @@ export default function App() {
   const [maxTemp, setMaxTemp] = useState('');
   const [minTemp, setMinTemp] = useState('');
   const [selectedFish, setSelectedFish] = useState('Colisa');
+  const ip = require("ip");
+  const url = `http://localhost:8000`
 
   let [fontsLoaded] = useFonts({
     LobsterTwo_700Bold,
@@ -30,7 +32,7 @@ export default function App() {
   }, []);
 
   const updateData = () => {
-    axios.get("http://localhost:8000/sensor/getData")
+    axios.get(url + "/sensor/getData")
       .then((res) => {
         setTemperature(res.data?.temperature);
         setPh(res.data?.ph);
@@ -40,7 +42,13 @@ export default function App() {
   }
 
   const handleSave = () => {
-    // adicionar a lógica para salvar os dados do peixe
+    axios.post(url + "/fish/new",{
+      name: fishType,
+      minTmp: minTemp,
+      maxTmp: maxTemp,
+      minPh: minPh,
+      maxPh: maxPh
+    });
     console.log({
       fishType,
       maxPh,
