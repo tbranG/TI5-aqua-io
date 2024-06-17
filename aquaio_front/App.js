@@ -65,7 +65,7 @@ export default function App() {
 
   return (
     <LinearGradient
-      colors={['#87CEFA', '#1E90FF']}
+      colors={['#4682B4', '#0D4F8B']}
       style={styles.gradient}
     >
       <View style={styles.container}>
@@ -202,12 +202,12 @@ const styles = StyleSheet.create({
   sensorLabel: {
     fontSize: 18,
     marginBottom: 5,
-    color: '#1E90FF',
+    color: '#0D4F8B', // Cor ajustada
     fontFamily: 'Inter_600SemiBold',
   },
   sensorValue: {
     fontSize: 24,
-    color: '#1E90FF',
+    color: '#0D4F8B', // Cor ajustada
     fontFamily: 'Inter_600SemiBold',
   },
   sensorValueRed: {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   pickerItem: {
-    color: '#1E90FF',
+    color: '#0D4F8B',
     fontFamily: 'Inter_600SemiBold',
   },
   buttonContainer: {
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   customButtonText: {
-    color: '#1E90FF',
+    color: '#0D4F8B', // Cor ajustada
     fontFamily: 'Inter_400Regular',
     fontSize: 16,
     textAlign: 'center',
