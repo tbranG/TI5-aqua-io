@@ -17,7 +17,8 @@ export default function App() {
   const [minPh, setMinPh] = useState('');
   const [maxTemp, setMaxTemp] = useState('');
   const [minTemp, setMinTemp] = useState('');
-  const [selectedFish, setSelectedFish] = useState('Colisa');
+  const [selectedFish, setSelectedFish] = useState('');
+  const [fishList, setFishList] = useState([]);
   const ip = require("ip");
   const url = `http://localhost:8000`
 
@@ -28,8 +29,16 @@ export default function App() {
   });
 
   useEffect(() => {
+    getFishList();
     updateData();
   }, []);
+
+  const getFishList = () => {
+    axios.get(url + "/fish")
+      .then(res => {
+        setFishList(res.data);
+      })
+  }
 
   const updateData = () => {
     axios.get(url + "/sensor/getData")
@@ -41,6 +50,48 @@ export default function App() {
     setTimeout(() => { updateData(); console.log("atualizei os dados")}, 5000);
   }
 
+  const getSelectedFishTmp = () => {
+    if(fishList.length <= 0){
+      return styles.sensorValue;
+    }
+    let fish = null;
+    fishList.forEach(f => {
+      if(f.name == selectedFish){
+        fish = f;
+      }
+    });
+    if(fish == null){
+      return styles.sensorValue;
+    }
+
+    if(temperature < fish.minTmp || temperature > fish.maxTmp){
+      return styles.sensorValueRed;
+    }
+
+    return styles.sensorValue;
+  }
+
+  const getSelectedFishPh = () => {
+    if(fishList.length <= 0){
+      return styles.sensorValue;
+    }
+    let fish = null;
+    fishList.forEach(f => {
+      if(f.name == selectedFish){
+        fish = f;
+      }
+    });
+    if(fish == null){
+      return styles.sensorValue;
+    }
+
+    if(ph < fish.minPh || ph > fish.maxPh){
+      return styles.sensorValueRed;
+    }
+
+    return styles.sensorValue;
+  }
+
   const handleSave = () => {
     axios.post(url + "/fish/new",{
       name: fishType,
@@ -49,13 +100,7 @@ export default function App() {
       minPh: minPh,
       maxPh: maxPh
     });
-    console.log({
-      fishType,
-      maxPh,
-      minPh,
-      maxTemp,
-      minTemp
-    });
+    getFishList();
     setModalVisible(false);
   }
 
@@ -73,11 +118,11 @@ export default function App() {
         <View style={styles.sensorContainer}>
           <View style={styles.sensorBox}>
             <Text style={styles.sensorLabel}>Temperatura</Text>
-            <Text style={temperature < 25 || temperature > 28 ? styles.sensorValueRed : styles.sensorValue}>{temperature}°C</Text>
+            <Text style={getSelectedFishTmp()}>{temperature}°C</Text>
           </View>
           <View style={styles.sensorBox}>
             <Text style={styles.sensorLabel}>pH</Text>
-            <Text style={ph < 6 || ph > 9 ? styles.sensorValueRed : styles.sensorValue}>{ph}</Text>
+            <Text style={getSelectedFishPh()}>{ph}</Text>
           </View>
         </View>
 
@@ -88,10 +133,11 @@ export default function App() {
             itemStyle={styles.pickerItem}
             onValueChange={(itemValue) => setSelectedFish(itemValue)}
           >
-            <Picker.Item label="Colisa" value="Colisa" />
-            <Picker.Item label="Tetra neon" value="Tetra neon" />
-            <Picker.Item label="Tilapia" value="Tilapia" />
-            <Picker.Item label="Peixinho dourado" value="Peixinho dourado" />
+            {fishList.map((fish, i) => {
+              return(
+                <Picker.Item label={fish.name} value={fish.name} key={i}/>
+              )
+            })}
           </Picker>
         </View>
 
