@@ -17,8 +17,9 @@ export default function App() {
   const [minPh, setMinPh] = useState('');
   const [maxTemp, setMaxTemp] = useState('');
   const [minTemp, setMinTemp] = useState('');
-  const [selectedFish, setSelectedFish] = useState('');
+  const [selectedFish, setSelectedFish] = useState(null);
   const [fishList, setFishList] = useState([]);
+  const [fishListComponent, setFishListComponent] = useState(<></>);
   const ip = require("ip");
   const url = `http://localhost:8000`
 
@@ -36,7 +37,13 @@ export default function App() {
   const getFishList = () => {
     axios.get(url + "/fish")
       .then(res => {
+        let fishComponent = (res.data.map((fish, i) => {
+          return(
+            <Picker.Item label={fish.name} value={fish.name} key={i}/>
+          )
+        }))
         setFishList(res.data);
+        setFishListComponent(fishComponent)
       })
   }
 
@@ -99,8 +106,9 @@ export default function App() {
       maxTmp: maxTemp,
       minPh: minPh,
       maxPh: maxPh
+    }).then(() => {
+      getFishList();
     });
-    getFishList();
     setModalVisible(false);
   }
 
@@ -128,16 +136,13 @@ export default function App() {
 
         <View style={styles.pickerContainer}>
           <Picker
-            selectedValue={selectedFish}
+            selectedValue={selectedFish ?? 'selecione seu peixe'}
             style={styles.picker}
             itemStyle={styles.pickerItem}
             onValueChange={(itemValue) => setSelectedFish(itemValue)}
           >
-            {fishList.map((fish, i) => {
-              return(
-                <Picker.Item label={fish.name} value={fish.name} key={i}/>
-              )
-            })}
+            <Picker.Item label='Selecione seu peixe' value='Selecione seu peixe' key={0}/>
+            {fishListComponent}
           </Picker>
         </View>
 
