@@ -12,12 +12,14 @@ export default function App() {
   const [temperature, setTemperature] = useState(0);
   const [ph, setPh] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [fishType, setFishType] = useState('');
   const [maxPh, setMaxPh] = useState('');
   const [minPh, setMinPh] = useState('');
   const [maxTemp, setMaxTemp] = useState('');
   const [minTemp, setMinTemp] = useState('');
-  const [selectedFish, setSelectedFish] = useState(null);
+  const [selectedFish, setSelectedFish] = useState('Selecione seu peixe');
   const [fishList, setFishList] = useState([]);
   const [fishListComponent, setFishListComponent] = useState(<></>);
   const ip = require("ip");
@@ -55,6 +57,32 @@ export default function App() {
       });
 
     setTimeout(() => { updateData(); console.log("atualizei os dados")}, 5000);
+  }
+
+  const checkAlertConditions = (temperature, ph, fishName) => {
+    console.log(fishName);
+    if(fishList.length <= 0 || fishName == null || fishName === 'Selecione seu peixe'){
+      return;
+    }
+    console.log('passei aqui');
+    let fish = fishList.find(f => f.name === fishName);
+
+    if (!fish) return;
+
+    let alertMessages = [];
+    console.log('temperatura peixe: ' + fish.minTmp, fish.maxTmp);
+    if(temperature < fish.minTmp || temperature > fish.maxTmp) {
+      alertMessages.push(`Temperatura fora da faixa: ${temperature}°C`);
+    }
+    
+    if(ph < fish.minPh || ph > fish.maxPh) {
+      alertMessages.push(`pH fora da faixa: ${ph}`);
+    }
+
+    if(alertMessages.length > 0) {
+      setAlertMessage(alertMessages.join('\n'));
+      setAlertModalVisible(true);
+    }
   }
 
   const getSelectedFishTmp = () => {
@@ -139,7 +167,11 @@ export default function App() {
             selectedValue={selectedFish ?? 'selecione seu peixe'}
             style={styles.picker}
             itemStyle={styles.pickerItem}
-            onValueChange={(itemValue) => setSelectedFish(itemValue)}
+            onValueChange={(itemValue) => {
+              setSelectedFish(itemValue);
+              console.log('valores: ' + temperature, ph);
+              checkAlertConditions(temperature, ph, itemValue);
+            }}
           >
             <Picker.Item label='Selecione seu peixe' value='Selecione seu peixe' key={0}/>
             {fishListComponent}
@@ -208,6 +240,28 @@ export default function App() {
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.textStyle}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={alertModalVisible}
+          onRequestClose={() => {
+            setAlertModalVisible(!alertModalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Alerta</Text>
+              <Text style={styles.alertMessage}>{alertMessage}</Text>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setAlertModalVisible(!alertModalVisible)}
+              >
+                <Text style={styles.textStyle}>Fechar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -344,6 +398,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: 'bold'
+  },
+  alertMessage: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'red'
   },
   input: {
     height: 40,
