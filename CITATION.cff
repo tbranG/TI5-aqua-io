@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Carvalho"
+  given-names: "André"
+- family-names: "Braga"
+  given-names: "Davi"
+- family-names: "Zegrine"
+  given-names: "Lucas"
+- family-names: "Carmo"
+  given-names: "Luis"
+- family-names: "Guerra"
+  given-names: "Tulio"
+title: "TI5-aqua-io"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2024-06-20
+url: "https://github.com/tbranG/TI5-aqua-io"
