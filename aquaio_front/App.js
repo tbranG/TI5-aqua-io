@@ -23,7 +23,9 @@ export default function App() {
   const [fishList, setFishList] = useState([]);
   const [fishListComponent, setFishListComponent] = useState(<></>);
   const ip = require("ip");
-  const url = `http://localhost:8000`
+  //const url = `http://localhost:8000`
+  //alterar para o endereco do front end
+  const url = `http://192.168.15.29:8000`
 
   let [fontsLoaded] = useFonts({
     LobsterTwo_700Bold,
@@ -72,11 +74,11 @@ export default function App() {
     let alertMessages = [];
     console.log('temperatura peixe: ' + fish.minTmp, fish.maxTmp);
     if(temperature < fish.minTmp || temperature > fish.maxTmp) {
-      alertMessages.push(`Temperatura fora da faixa: ${temperature}°C`);
+      alertMessages.push(`Temperatura fora da faixa: ${temperature.toFixed(2)}°C`);
     }
     
     if(ph < fish.minPh || ph > fish.maxPh) {
-      alertMessages.push(`pH fora da faixa: ${ph}`);
+      alertMessages.push(`pH fora da faixa: ${ph.toFixed(2)}`);
     }
 
     if(alertMessages.length > 0) {
@@ -147,18 +149,17 @@ export default function App() {
   return (
     <LinearGradient
       colors={['#4682B4', '#0D4F8B']}
-      style={styles.gradient}
-    >
+      style={styles.gradient}>
       <View style={styles.container}>
         <Text style={styles.title}>Aqua.IO</Text>
         <View style={styles.sensorContainer}>
           <View style={styles.sensorBox}>
             <Text style={styles.sensorLabel}>Temperatura</Text>
-            <Text style={getSelectedFishTmp()}>{temperature}°C</Text>
+            <Text style={getSelectedFishTmp()}>{temperature.toFixed(2)}°C</Text>
           </View>
           <View style={styles.sensorBox}>
             <Text style={styles.sensorLabel}>pH</Text>
-            <Text style={getSelectedFishPh()}>{ph}</Text>
+            <Text style={getSelectedFishPh()}>{ph.toFixed(2)}</Text>
           </View>
         </View>
 
@@ -171,8 +172,7 @@ export default function App() {
               setSelectedFish(itemValue);
               console.log('valores: ' + temperature, ph);
               checkAlertConditions(temperature, ph, itemValue);
-            }}
-          >
+            }}>
             <Picker.Item label='Selecione seu peixe' value='Selecione seu peixe' key={0}/>
             {fishListComponent}
           </Picker>
